@@ -43,6 +43,3 @@ change the name in the TOML file to switch to part 2 bench or back to part 1.
 ex. NitroSniper
 ex. [@NitroSniper](https://youtube.com/@OrtinFargo)
 
-## Acknowledgments
-
-TODO!

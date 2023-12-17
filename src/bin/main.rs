@@ -1,4 +1,3 @@
-use library;
 use std::env;
 
 fn main() {

@@ -13,5 +13,5 @@ name = "library"
 
 
 [[bench]]
-name = "bench_1"
+name = "bench_2"
 harness = false

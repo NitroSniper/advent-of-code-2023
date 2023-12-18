@@ -50,21 +50,24 @@ impl std::str::FromStr for Color {
     }
 }
 
+fn update_actual_bag(set: &str, actual_bag: &mut Bag) {
+    let mut game_bag = Bag::default();
+    for cubes in set.split_terminator(',') {
+        let (number, color) = cubes.trim().split_once(' ').unwrap();
+        game_bag.add_cube(
+            Color::from_str(color).expect("to turn to enum"),
+            number.parse::<u32>().expect("to turn to number"),
+            )
+    }
+    actual_bag.make_enough(&game_bag)
+}
 pub fn problem(input: &str) -> String {
     let mut total = 0;
     for line in input.split_terminator('\n') {
         let mut actual_bag = Bag::default();
         let (_, cube_set) = line.split_once(':').unwrap();
         for set in cube_set.split_terminator(';') {
-            let mut game_bag = Bag::default();
-            for cubes in set.split_terminator(',') {
-                let (number, color) = cubes.trim().split_once(' ').unwrap();
-                game_bag.add_cube(
-                    Color::from_str(color).expect("to turn to enum"),
-                    number.parse::<u32>().expect("to turn to number"),
-                )
-            }
-            actual_bag.make_enough(&game_bag)
+            update_actual_bag(set, &mut actual_bag)
         }
         total += actual_bag.make_power();
     }

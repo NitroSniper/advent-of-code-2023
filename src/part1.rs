@@ -16,8 +16,8 @@ impl Bag {
         };
     }
 
-    fn is_enough(&self, other: &Self) -> bool {
-        self.red >= other.red && self.green >= other.green && self.blue >= other.blue
+    fn is_not_enough(&self, other: &Self) -> bool {
+        self.red < other.red || self.green < other.green || self.blue < other.blue
     }
 }
 
@@ -48,25 +48,21 @@ pub fn problem(input: &str) -> String {
     let mut total = 0;
     'line: for line in input.split_terminator('\n') {
         let (game_line, cube_set) = line.split_once(':').unwrap();
-        let (_, game_number) = game_line.split_once(' ').unwrap();
-
         for set in cube_set.split_terminator(';') {
             let mut game_bag = Bag::default();
             for cubes in set.split_terminator(',') {
-                let [number, color] = cubes.trim().split_terminator(' ').collect::<Vec<_>>()[..]
-                else {
-                    panic!("couldn't split up")
-                };
+                let (number, color) = cubes.trim().split_once(' ').unwrap();
                 game_bag.add_cube(
                     Color::from_str(color).expect("to turn to enum"),
                     number.parse::<u32>().expect("to turn to number"),
                 )
             }
 
-            if !actual_bag.is_enough(&game_bag) {
+            if actual_bag.is_not_enough(&game_bag) {
                 continue 'line;
             }
         }
+        let (_, game_number) = game_line.split_once(' ').unwrap();
         total += game_number.parse::<u32>().expect("this to be a number");
     }
     total.to_string()
